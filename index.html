@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Solar Farm Location Decision Tool</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="header-brand">
+        <span class="header-logo" aria-hidden="true">&#9728;</span>
+        <h1 class="header-title">Solar Farm Decision Tool</h1>
+        <span class="header-subtitle">US Location Analysis</span>
+      </div>
+      <nav class="header-nav" aria-label="Main navigation">
+        <a href="#section-rankings" class="nav-link">Rankings</a>
+        <a href="#section-calculator" class="nav-link">Calculator</a>
+        <a href="#section-map" class="nav-link">Map</a>
+        <a href="#section-comparison" class="nav-link">Compare</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="site-main">
+
+    <section id="section-rankings" class="app-section">
+      <div class="section-inner">
+        <div class="section-header">
+          <h2 class="section-title">Location Rankings</h2>
+          <p class="section-desc">All candidate locations ranked by profitability. Adjust the calculator below to re-rank with custom farm parameters.</p>
+        </div>
+        <div id="rankings-controls-mount"></div>
+        <div id="rankings-list" class="rankings-list" role="list" aria-label="Ranked locations"></div>
+      </div>
+    </section>
+
+    <section id="section-calculator" class="app-section app-section--alt">
+      <div class="section-inner">
+        <div id="calculator-mount"></div>
+      </div>
+    </section>
+
+    <section id="section-map" class="app-section">
+      <div class="section-inner">
+        <div class="section-header">
+          <h2 class="section-title">Location Map</h2>
+          <p class="section-desc">US states color-coded by estimated ROI.</p>
+        </div>
+        <div id="map-mount"></div>
+      </div>
+    </section>
+
+    <section id="section-detail" class="app-section app-section--alt">
+      <div class="section-inner">
+        <div id="detail-mount"></div>
+      </div>
+    </section>
+
+    <section id="section-comparison" class="app-section">
+      <div class="section-inner">
+        <div id="comparison-mount"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <p>Solar Farm Decision Tool &mdash; All data is simulated for demonstration purposes only.</p>
+    </div>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/calculator.js"></script>
+  <script src="js/rankings.js"></script>
+  <script src="js/map.js"></script>
+  <script src="js/detail.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+</html>
