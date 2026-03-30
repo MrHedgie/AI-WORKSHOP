@@ -350,74 +350,121 @@
     <div class="roi-badge">&#9989; Phoenix AZ: ROI ≈ 27,9% &nbsp;|&nbsp; Zwrot ≈ 3,6 lat</div>
   </div>
 
-  <!-- 5. Dane — 12 lokalizacji -->
+  <!-- 5. Dane — 50 stanów -->
   <div class="slide slide--light">
-    <div class="tag">Dane wejściowe</div>
-    <h2>12 lokalizacji w USA</h2>
-    <p>Każda lokalizacja zawiera miesięczne dane o nasłonecznieniu i cenach energii, koszt gruntu oraz dostępność sieci energetycznej.</p>
-    <div class="cards" style="margin-top:1.5rem">
-      <div class="card"><h3>&#127774; Southwest</h3><p>Phoenix AZ · Albuquerque NM · Las Vegas NV</p></div>
-      <div class="card"><h3>&#127807; South Central</h3><p>Midland TX</p></div>
-      <div class="card"><h3>&#127774; West / Mountain</h3><p>Fresno CA · Denver CO</p></div>
-      <div class="card"><h3>&#127807; Southeast</h3><p>Orlando FL · Savannah GA · Raleigh NC</p></div>
-      <div class="card"><h3>&#127777; Midwest / Northeast</h3><p>Wichita KS · Rochester MN · Springfield MA</p></div>
+    <div class="tag">Dane wejściowe — aktualizacja</div>
+    <h2>Rozszerzono do <span style="color:var(--accent)">50 stanów USA</span></h2>
+    <p>Każdy stan ma reprezentatywne miasto z realistycznymi danymi nasłonecznienia, cen energii i kosztów gruntu. Dodano pole <code style="background:#eee;padding:0.1rem 0.4rem;border-radius:4px">state_abbr</code> potrzebne Dev B do mapowania stanów SVG.</p>
+    <div class="cards" style="margin-top:1.2rem">
+      <div class="card"><h3>&#9728; Southwest</h3><p>AZ · NM · NV</p></div>
+      <div class="card"><h3>&#9961; Mountain</h3><p>CO · ID · MT · UT · WY</p></div>
+      <div class="card"><h3>&#127807; South Central</h3><p>TX · OK · AR · LA</p></div>
+      <div class="card"><h3>&#127774; Southeast</h3><p>FL · GA · NC · AL · MS · SC · TN · VA · WV · KY</p></div>
+      <div class="card"><h3>&#127777; Midwest</h3><p>KS · MN · IL · IN · IA · MI · MO · ND · NE · OH · SD · WI</p></div>
+      <div class="card"><h3>&#127968; Northeast</h3><p>MA · CT · DE · ME · MD · NH · NJ · NY · PA · RI · VT</p></div>
+      <div class="card"><h3>&#127956; Pacific NW + Pacific</h3><p>WA · OR · AK · CA · HI</p></div>
     </div>
   </div>
 
-  <!-- 6. Architektura plików -->
+  <!-- 6. Nowe funkcje — co się zmieniło -->
+  <div class="slide slide--dark">
+    <div class="tag">Nowe funkcjonalności</div>
+    <h2>Co trafiło do <span class="accent">main</span>?</h2>
+    <div class="cards" style="margin-top:1.5rem">
+      <div class="card">
+        <div class="card-icon">&#127758;</div>
+        <h3>50 stanów zamiast 12</h3>
+        <p>Pełne pokrycie USA — każdy stan, 9 regionów, pole <code>state_abbr</code> dla mapy SVG</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">&#127758;</div>
+        <h3>SPA-nawigacja</h3>
+        <p><code>app.js</code> zarządza widocznością sekcji; <code>window.AppEvents.showSection()</code> dostępne dla wszystkich modułów</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">&#128201;</div>
+        <h3>Formatery w Calculator</h3>
+        <p><code>fmtMoney()</code>, <code>fmtPct()</code>, <code>fmtYrs()</code> — gotowe helpery do wyświetlania danych</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">&#128196;</div>
+        <h3>HTML gotowy dla Dev B</h3>
+        <p>Kontenery mapy, Canvas wykresy, tabela porównania i selektory lokalizacji już w index.html</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. SPA-nawigacja — szczegóły -->
+  <div class="slide slide--accent">
+    <div class="tag">SPA-nawigacja</div>
+    <h2>Jedna strona — wiele widoków</h2>
+    <p>Sekcje są ukryte (<code style="opacity:0.8">display:none</code>) i pokazywane przez JS. Brak przeładowania strony, brak routera — czyste CSS + JS.</p>
+    <div class="formula" style="margin-top:1.5rem; font-size:0.82rem">
+      <span style="color:rgba(255,255,255,0.5)">/* CSS */</span><br>
+      .app-section        { display: none; }<br>
+      .app-section.active { display: block; }<br><br>
+      <span style="color:rgba(255,255,255,0.5)">/* app.js — dostępne dla wszystkich modułów */</span><br>
+      <span style="color:var(--accent)">window.AppEvents.showSection</span>('map');      <span style="color:rgba(255,255,255,0.4)">// idź do mapy</span><br>
+      <span style="color:var(--accent)">window.AppEvents.showSection</span>('detail');   <span style="color:rgba(255,255,255,0.4)">// po kliknięciu stanu</span><br>
+      <span style="color:var(--accent)">window.AppEvents.showSection</span>('comparison');<span style="color:rgba(255,255,255,0.4)">// porównanie</span>
+    </div>
+  </div>
+
+  <!-- 8. Architektura plików -->
   <div class="slide slide--dark">
     <div class="tag">Architektura</div>
     <h2>Struktura projektu</h2>
     <ul class="file-list">
-      <li><span class="fname">index.html</span>       <span class="fdesc">Szkielet HTML — sekcje, kontenery, kolejność skryptów</span></li>
-      <li><span class="fname">css/styles.css</span>   <span class="fdesc">Style wspólne + bloki dla Dev A i Dev B</span></li>
-      <li><span class="fname">js/data.js</span>       <span class="fdesc">Dane mockowe 12 lokalizacji → <code>window.AppData</code></span></li>
-      <li><span class="fname">js/calculator.js</span> <span class="fdesc">Czyste funkcje finansowe → <code>window.Calculator</code></span></li>
-      <li><span class="fname">js/rankings.js</span>   <span class="fdesc">UI rankingów + panel kalkulatora → <code>initRankings()</code></span></li>
-      <li><span class="fname">js/map.js</span>        <span class="fdesc">Mapa SVG USA, kolor stanów wg ROI → <code>initMap()</code></span></li>
-      <li><span class="fname">js/detail.js</span>     <span class="fdesc">Widok szczegółowy, wykresy, porównanie → <code>initDetail()</code></span></li>
-      <li><span class="fname">js/app.js</span>        <span class="fdesc">Inicjalizacja — wywołuje wszystkie moduły</span></li>
+      <li><span class="fname">index.html</span>       <span class="fdesc">Szkielet SPA — sekcje z <code>active</code>, kontenery, kolejność skryptów</span></li>
+      <li><span class="fname">css/styles.css</span>   <span class="fdesc">Style wspólne + <code>.nav-btn</code>, <code>.btn-back</code> + bloki Dev A / Dev B</span></li>
+      <li><span class="fname">js/data.js</span>       <span class="fdesc">50 stanów USA + <code>state_abbr</code> → <code>window.AppData</code></span></li>
+      <li><span class="fname">js/calculator.js</span> <span class="fdesc">calcROI, rankLocations, projectProfits + <code>fmtMoney / fmtPct / fmtYrs</code></span></li>
+      <li><span class="fname">js/rankings.js</span>   <span class="fdesc">UI rankingów + panel kalkulatora + 9 regionów w filtrze</span></li>
+      <li><span class="fname">js/map.js</span>        <span class="fdesc">Mapa SVG USA, kolor stanów wg ROI → <code>initMap()</code> <em style="opacity:0.5">[Dev B]</em></span></li>
+      <li><span class="fname">js/detail.js</span>     <span class="fdesc">Wykresy Canvas, prognoza 10-letnia, porównanie → <code>initDetail()</code> <em style="opacity:0.5">[Dev B]</em></span></li>
+      <li><span class="fname">js/app.js</span>        <span class="fdesc">Init + routing SPA → <code>window.AppEvents.showSection()</code></span></li>
     </ul>
   </div>
 
-  <!-- 7. Podział pracy -->
+  <!-- 9. Podział pracy -->
   <div class="slide slide--split">
     <div class="split-col">
       <div class="tag">Dev A ✅ Gotowe</div>
       <h2>Dane, logika, rankingi</h2>
-      <p>Warstwa danych i obliczeń jest ukończona i gotowa do użycia przez Dev B.</p>
+      <p>Warstwa danych i obliczeń ukończona. Dev B może już teraz korzystać z pełnego API.</p>
       <div class="cards" style="margin-top:1.2rem; justify-content:flex-start">
-        <div class="card"><h3>data.js</h3><p>12 lokalizacji, konfiguracja domyślna</p></div>
-        <div class="card"><h3>calculator.js</h3><p>calcROI, rankLocations, projectProfits</p></div>
-        <div class="card"><h3>rankings.js</h3><p>Lista rankingów, filtry, kalkulator</p></div>
+        <div class="card"><h3>data.js</h3><p>50 stanów, <code>state_abbr</code>, konfiguracja domyślna</p></div>
+        <div class="card"><h3>calculator.js</h3><p>calcROI, rankLocations, projectProfits, fmtMoney, fmtPct, fmtYrs</p></div>
+        <div class="card"><h3>rankings.js</h3><p>Lista rankingów, filtry 9 regionów, kalkulator live</p></div>
+        <div class="card"><h3>app.js</h3><p>SPA routing, AppEvents.showSection()</p></div>
       </div>
     </div>
     <div class="split-col dark-col">
       <div class="tag" style="color:var(--accent)">Dev B — Następny krok</div>
       <h2>Mapa, wykresy, porównanie</h2>
-      <p>Dev B buduje na gotowym API. Wystarczy wywołać <code style="color:var(--accent)">window.Calculator.calcROI()</code> i <code style="color:var(--accent)">window.AppData.locations</code>.</p>
+      <p>HTML kontenery i Canvas elementy już gotowe w <code style="color:var(--accent)">index.html</code>. Dev B wypełnia je danymi.</p>
       <div class="cards" style="margin-top:1.2rem; justify-content:flex-start">
-        <div class="card"><h3>map.js</h3><p>SVG mapa USA, kolory wg ROI</p></div>
-        <div class="card"><h3>detail.js</h3><p>Wykresy miesięczne, prognoza 10-letnia</p></div>
+        <div class="card"><h3>map.js</h3><p>SVG kolory stanów wg ROI, hover panel, nawigacja do detail</p></div>
+        <div class="card"><h3>detail.js</h3><p>3× Canvas wykresy + tabela porównania z dropdownami</p></div>
       </div>
     </div>
   </div>
 
-  <!-- 8. Stos technologiczny -->
+  <!-- 10. Stos technologiczny -->
   <div class="slide slide--dark">
     <div class="tag">Technologia</div>
     <h2>Zero zewnętrznych zależności</h2>
     <p>Vanilla JS + HTML + CSS. Brak frameworków, brak npm, brak bundlera — otwierasz <code style="color:var(--accent)">index.html</code> w przeglądarce i działa.</p>
-    <div class="steps" style="max-width:600px; width:100%">
-      <div class="step"><div class="step-num">1</div><div class="step-label">data.js ładuje dane</div></div>
-      <div class="step"><div class="step-num">2</div><div class="step-label">calculator.js liczy ROI</div></div>
-      <div class="step"><div class="step-num">3</div><div class="step-label">rankings.js renderuje UI</div></div>
-      <div class="step"><div class="step-num">4</div><div class="step-label">map + detail (Dev B)</div></div>
-      <div class="step"><div class="step-num">5</div><div class="step-label">app.js spina całość</div></div>
+    <div class="steps" style="max-width:700px; width:100%">
+      <div class="step"><div class="step-num">1</div><div class="step-label">data.js 50 stanów</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-label">calculator.js ROI + formatery</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-label">rankings.js UI + filtry</div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-label">map + detail Dev B</div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-label">app.js init + SPA routing</div></div>
     </div>
   </div>
 
-  <!-- 9. Status / Co dalej -->
+  <!-- 11. Status / Co dalej -->
   <div class="slide slide--accent">
     <div class="tag">Status projektu</div>
     <h2>Co zostało zrobione?<br>Co zostało do zrobienia?</h2>
@@ -425,12 +472,12 @@
       <div class="card">
         <div class="card-icon">&#9989;</div>
         <h3>Ukończone (Dev A)</h3>
-        <p>Dane, obliczenia, rankingi, kalkulator, HTML skeleton, CSS, inicjalizacja</p>
+        <p>50 stanów, obliczenia + formatery, rankingi, kalkulator live, SPA-nawigacja, HTML/CSS skeleton</p>
       </div>
       <div class="card">
         <div class="card-icon">&#9648;</div>
         <h3>W toku (Dev B)</h3>
-        <p>Interaktywna mapa SVG, wykresy miesięczne, widok porównania, prognoza 10-letnia</p>
+        <p>Interaktywna mapa SVG, wykresy Canvas (nasłonecznienie, ceny, P&amp;L), tabela porównania</p>
       </div>
       <div class="card">
         <div class="card-icon">&#128640;</div>
@@ -440,7 +487,7 @@
     </div>
   </div>
 
-  <!-- 10. Koniec -->
+  <!-- 12. Koniec -->
   <div class="slide slide--dark">
     <div class="tag">Podsumowanie</div>
     <div class="big">&#9728;</div>
@@ -448,8 +495,9 @@
     <p>Solar Farm Decision Tool — narzędzie, które zamienia godziny ręcznej analizy w kilka sekund pracy.</p>
     <div style="margin-top:2rem; display:flex; gap:1rem; flex-wrap:wrap; justify-content:center">
       <div class="roi-badge">&#128197; Vanilla JS + HTML + CSS</div>
-      <div class="roi-badge">&#128205; 12 lokalizacji USA</div>
+      <div class="roi-badge">&#128205; 50 stanów USA</div>
       <div class="roi-badge">&#128200; ROI, CapEx, Payback</div>
+      <div class="roi-badge">&#128279; SPA-nawigacja</div>
     </div>
   </div>
 
