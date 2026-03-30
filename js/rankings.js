@@ -9,7 +9,7 @@
   // ── State ──────────────────────────────────────────────────────────────────
   var currentSortBy = 'roi';
   var currentFilters = { minROI: 0, maxPayback: Infinity, region: 'all' };
-  var currentConfig = null; // initialized in initRankings
+  var currentConfig = null;
   var calcDebounceTimer = null;
 
   // ── Public init ────────────────────────────────────────────────────────────
@@ -58,15 +58,12 @@
     var filterWrap = document.createElement('div');
     filterWrap.className = 'filter-controls';
 
-    // Min ROI
-    var minRoiGroup = createInputGroup('filter-min-roi', 'Min ROI %', 'number', { min: '0', max: '100', step: '1', value: '0', placeholder: '0' });
-    filterWrap.appendChild(minRoiGroup);
+    filterWrap.appendChild(createInputGroup('filter-min-roi', 'Min ROI %', 'number',
+      { min: '0', max: '100', step: '1', value: '0', placeholder: '0' }));
 
-    // Max Payback
-    var maxPbGroup = createInputGroup('filter-max-payback', 'Max Payback (yrs)', 'number', { min: '0', max: '99', step: '1', value: '', placeholder: 'Any' });
-    filterWrap.appendChild(maxPbGroup);
+    filterWrap.appendChild(createInputGroup('filter-max-payback', 'Max Payback (yrs)', 'number',
+      { min: '0', max: '99', step: '1', value: '', placeholder: 'Any' }));
 
-    // Region
     var regionGroup = document.createElement('div');
     regionGroup.className = 'filter-group';
     var regionLabel = document.createElement('label');
@@ -75,14 +72,14 @@
     var regionSelect = document.createElement('select');
     regionSelect.id = 'filter-region';
     [
-      { value: 'all',          text: 'All Regions' },
-      { value: 'Southwest',    text: 'Southwest' },
-      { value: 'West',         text: 'West' },
-      { value: 'Mountain',     text: 'Mountain' },
-      { value: 'South Central',text: 'South Central' },
-      { value: 'Southeast',    text: 'Southeast' },
-      { value: 'Midwest',      text: 'Midwest' },
-      { value: 'Northeast',    text: 'Northeast' }
+      { value: 'all',            text: 'All Regions' },
+      { value: 'Southwest',      text: 'Southwest' },
+      { value: 'West',           text: 'West' },
+      { value: 'Mountain',       text: 'Mountain' },
+      { value: 'South Central',  text: 'South Central' },
+      { value: 'Southeast',      text: 'Southeast' },
+      { value: 'Midwest',        text: 'Midwest' },
+      { value: 'Northeast',      text: 'Northeast' }
     ].forEach(function (opt) {
       var o = document.createElement('option');
       o.value = opt.value;
@@ -93,7 +90,6 @@
     regionGroup.appendChild(regionSelect);
     filterWrap.appendChild(regionGroup);
 
-    // Reset button
     var resetBtn = document.createElement('button');
     resetBtn.id = 'filter-reset';
     resetBtn.className = 'btn-secondary';
@@ -102,7 +98,6 @@
 
     wrap.appendChild(filterWrap);
 
-    // Results count
     var countWrap = document.createElement('div');
     countWrap.className = 'results-count';
     var countSpan = document.createElement('span');
@@ -133,25 +128,27 @@
     sub.textContent = 'Adjust farm parameters and apply to re-rank all locations.';
     panel.appendChild(sub);
 
-    // Inputs grid
     var inputsDiv = document.createElement('div');
     inputsDiv.className = 'calculator-inputs';
 
     var cfg = window.AppData.defaultConfig;
-    inputsDiv.appendChild(createInputGroup('calc-panels',      'Number of Panels',       'number', { min: '100',  max: '500000', step: '100',  value: String(cfg.panels) }));
-    inputsDiv.appendChild(createInputGroup('calc-panel-price', 'Panel Price ($/panel)',   'number', { min: '50',   max: '1000',   step: '10',   value: String(cfg.panel_price_usd) }));
+    inputsDiv.appendChild(createInputGroup('calc-panels',      'Number of Panels',     'number',
+      { min: '100', max: '500000', step: '100', value: String(cfg.panels) }));
+    inputsDiv.appendChild(createInputGroup('calc-panel-price', 'Panel Price ($/panel)', 'number',
+      { min: '50',  max: '1000',   step: '10',  value: String(cfg.panel_price_usd) }));
 
-    var effGroup = createInputGroup('calc-efficiency',  'Panel Efficiency (%)',   'number', { min: '5',    max: '35',     step: '0.5',  value: String(cfg.panel_efficiency * 100) });
+    var effGroup = createInputGroup('calc-efficiency', 'Panel Efficiency (%)', 'number',
+      { min: '5', max: '35', step: '0.5', value: String(cfg.panel_efficiency * 100) });
     var hint = document.createElement('span');
     hint.className = 'input-hint';
     hint.textContent = 'Standard panels: 18–22%';
     effGroup.appendChild(hint);
     inputsDiv.appendChild(effGroup);
 
-    inputsDiv.appendChild(createInputGroup('calc-opex',        'Annual OpEx ($)',         'number', { min: '0',    max: '10000000', step: '1000', value: String(cfg.annual_opex_usd) }));
+    inputsDiv.appendChild(createInputGroup('calc-opex', 'Annual OpEx ($)', 'number',
+      { min: '0', max: '10000000', step: '1000', value: String(cfg.annual_opex_usd) }));
     panel.appendChild(inputsDiv);
 
-    // Output section
     var outputDiv = document.createElement('div');
     outputDiv.className = 'calculator-output';
     outputDiv.id = 'calc-output';
@@ -193,25 +190,20 @@
     locStrong.id = 'out-location-name';
     locStrong.textContent = '—';
     note.appendChild(locStrong);
-    note.appendChild(document.createTextNode(' — plot price estimated from land cost \xd7 required acreage'));
+    note.appendChild(document.createTextNode(' — plot price estimated from land cost × required acreage'));
     outputDiv.appendChild(note);
-
     panel.appendChild(outputDiv);
 
-    // Action buttons
     var actions = document.createElement('div');
     actions.className = 'calculator-actions';
-
     var applyBtn = document.createElement('button');
     applyBtn.id = 'calc-apply';
     applyBtn.className = 'btn-primary';
     applyBtn.textContent = 'Apply to Rankings';
-
     var resetBtn = document.createElement('button');
     resetBtn.id = 'calc-reset';
     resetBtn.className = 'btn-secondary';
     resetBtn.textContent = 'Reset to Defaults';
-
     actions.appendChild(applyBtn);
     actions.appendChild(resetBtn);
     panel.appendChild(actions);
@@ -226,12 +218,8 @@
     if (!list) return;
 
     var ranked = window.Calculator.rankLocations(
-      window.AppData.locations,
-      currentConfig,
-      currentSortBy
-    );
+      window.AppData.locations, currentConfig, currentSortBy);
 
-    // Apply filters
     var filtered = ranked.filter(function (item) {
       var roiPct = item.metrics.roi * 100;
       if (roiPct < currentFilters.minROI) return false;
@@ -240,13 +228,11 @@
       return true;
     });
 
-    // Update count text
     var countEl = document.getElementById('results-count-text');
     if (countEl) {
       countEl.textContent = 'Showing ' + filtered.length + ' of ' + window.AppData.locations.length + ' locations';
     }
 
-    // Clear and re-render
     list.innerHTML = '';
 
     if (filtered.length === 0) {
@@ -269,17 +255,14 @@
     article.setAttribute('data-id', location.id);
     article.setAttribute('data-roi', String(metrics.roi));
 
-    // Rank badge
     var rankDiv = document.createElement('div');
     rankDiv.className = 'card-rank' + (rank <= 3 ? ' card-rank--top' : '');
     rankDiv.textContent = '#' + rank;
     article.appendChild(rankDiv);
 
-    // Card body
     var body = document.createElement('div');
     body.className = 'card-body';
 
-    // Header row
     var headerRow = document.createElement('div');
     headerRow.className = 'card-header-row';
     var nameEl = document.createElement('h3');
@@ -292,7 +275,6 @@
     headerRow.appendChild(regionEl);
     body.appendChild(headerRow);
 
-    // Metric boxes
     var metricsRow = document.createElement('div');
     metricsRow.className = 'card-metrics';
     var roiClass = getROIColorClass(metrics.roi);
@@ -301,16 +283,14 @@
     metricsRow.appendChild(createMetricBox('Annual Profit', formatCurrency(metrics.annualProfit), ''));
     body.appendChild(metricsRow);
 
-    // Key metric chips
     var chips = document.createElement('div');
     chips.className = 'card-key-metrics';
-
     var gridAvail = location.grid_connection_available ? 'Available' : 'Limited';
     [
-      { label: 'Irradiance', value: location.avg_irradiance_kwh_m2_day.toFixed(1) + ' kWh/m\u00b2/day' },
+      { label: 'Irradiance',   value: location.avg_irradiance_kwh_m2_day.toFixed(1) + ' kWh/m²/day' },
       { label: 'Energy Price', value: '$' + location.avg_energy_price_usd_kwh.toFixed(2) + '/kWh' },
-      { label: 'Land Cost', value: '$' + location.land_cost_usd_acre.toLocaleString() + '/acre' },
-      { label: 'Grid', value: gridAvail }
+      { label: 'Land Cost',    value: '$' + location.land_cost_usd_acre.toLocaleString() + '/acre' },
+      { label: 'Grid',         value: gridAvail }
     ].forEach(function (chip, idx, arr) {
       var span = document.createElement('span');
       span.className = 'key-metric';
@@ -327,27 +307,46 @@
         var sep = document.createElement('span');
         sep.className = 'key-metric-sep';
         sep.setAttribute('aria-hidden', 'true');
-        sep.textContent = '\u00b7';
+        sep.textContent = '·';
         chips.appendChild(sep);
       }
     });
     body.appendChild(chips);
 
+    // Action buttons
+    var actions = document.createElement('div');
+    actions.className = 'card-actions';
+    var detailBtn = document.createElement('button');
+    detailBtn.className = 'btn-secondary';
+    detailBtn.textContent = 'Details';
+    detailBtn.onclick = function () {
+      if (window.AppEvents && window.AppEvents.showDetail) {
+        window.AppEvents.showDetail(location.id);
+      }
+    };
+    var compareBtn = document.createElement('button');
+    compareBtn.className = 'btn-secondary';
+    compareBtn.textContent = 'Compare';
+    compareBtn.onclick = function () {
+      if (window.AppEvents && window.AppEvents.addToCompare) {
+        window.AppEvents.addToCompare(location.id);
+      }
+    };
+    actions.appendChild(detailBtn);
+    actions.appendChild(compareBtn);
+    body.appendChild(actions);
+
     article.appendChild(body);
     return article;
   }
 
-  // ── Render: calculator output ──────────────────────────────────────────────
+  // ── Calculator output ──────────────────────────────────────────────────────
   function updateCalculatorOutput() {
     var tempConfig = readCalcInputs();
     if (!tempConfig) return;
 
-    // Get top-ranked location with current config (no filter applied for preview)
     var ranked = window.Calculator.rankLocations(
-      window.AppData.locations,
-      tempConfig,
-      currentSortBy
-    );
+      window.AppData.locations, tempConfig, currentSortBy);
     if (!ranked.length) return;
 
     var top = ranked[0];
@@ -439,11 +438,11 @@
     if (panels <= 0 || panelPrice <= 0 || effPct <= 0) return null;
 
     return {
-      panels: Math.round(panels),
-      panel_price_usd: panelPrice,
+      panels:           Math.round(panels),
+      panel_price_usd:  panelPrice,
       panel_efficiency: effPct / 100,
-      panel_area_m2: window.AppData.defaultConfig.panel_area_m2,
-      annual_opex_usd: opex
+      panel_area_m2:    window.AppData.defaultConfig.panel_area_m2,
+      annual_opex_usd:  opex
     };
   }
 
@@ -480,9 +479,7 @@
     if (isNaN(n) || n === null) return '—';
     try {
       return new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'USD',
-        maximumFractionDigits: 0
+        style: 'currency', currency: 'USD', maximumFractionDigits: 0
       }).format(n);
     } catch (e) {
       return '$' + Math.round(n).toLocaleString();

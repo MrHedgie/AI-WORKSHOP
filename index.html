@@ -16,52 +16,116 @@
         <span class="header-subtitle">US Location Analysis</span>
       </div>
       <nav class="header-nav" aria-label="Main navigation">
-        <a href="#section-rankings" class="nav-link">Rankings</a>
-        <a href="#section-calculator" class="nav-link">Calculator</a>
-        <a href="#section-map" class="nav-link">Map</a>
-        <a href="#section-comparison" class="nav-link">Compare</a>
+        <button class="nav-btn active" data-section="rankings">Rankings</button>
+        <button class="nav-btn" data-section="calculator">Calculator</button>
+        <button class="nav-btn" data-section="map">Map</button>
+        <button class="nav-btn" data-section="comparison">Compare</button>
       </nav>
     </div>
   </header>
 
   <main class="site-main">
 
-    <section id="section-rankings" class="app-section">
+    <!-- Dev A: Rankings -->
+    <section id="section-rankings" class="app-section active">
       <div class="section-inner">
         <div class="section-header">
           <h2 class="section-title">Location Rankings</h2>
-          <p class="section-desc">All candidate locations ranked by profitability. Adjust the calculator below to re-rank with custom farm parameters.</p>
+          <p class="section-desc">All candidate locations ranked by profitability. Adjust the calculator to re-rank with custom farm parameters.</p>
         </div>
         <div id="rankings-controls-mount"></div>
         <div id="rankings-list" class="rankings-list" role="list" aria-label="Ranked locations"></div>
       </div>
     </section>
 
-    <section id="section-calculator" class="app-section app-section--alt">
+    <!-- Dev A: Calculator -->
+    <section id="section-calculator" class="app-section">
       <div class="section-inner">
         <div id="calculator-mount"></div>
       </div>
     </section>
 
+    <!-- Dev B: Map -->
     <section id="section-map" class="app-section">
       <div class="section-inner">
         <div class="section-header">
           <h2 class="section-title">Location Map</h2>
-          <p class="section-desc">US states color-coded by estimated ROI.</p>
+          <p class="section-desc">US states color-coded by estimated ROI. Click a state to view details.</p>
         </div>
-        <div id="map-mount"></div>
+        <div class="map-layout">
+          <div id="map-container" class="map-container card"></div>
+          <div class="map-sidebar">
+            <div id="map-legend" class="map-legend card">
+              <h3>ROI Legend</h3>
+              <div class="legend-scale"></div>
+            </div>
+            <div id="map-hover-info" class="map-hover-info card" style="display:none">
+              <h3 id="map-hover-name"></h3>
+              <div id="map-hover-stats"></div>
+              <button id="map-view-detail" class="btn-secondary">View Detail</button>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
-    <section id="section-detail" class="app-section app-section--alt">
+    <!-- Dev B: Detail -->
+    <section id="section-detail" class="app-section">
       <div class="section-inner">
-        <div id="detail-mount"></div>
+        <div class="section-header">
+          <button id="detail-back" class="btn-back">&#8592; Back to Rankings</button>
+          <h2 id="detail-title" class="section-title">Location Detail</h2>
+        </div>
+        <div id="detail-content" class="detail-layout">
+          <div class="detail-metrics card">
+            <h3>Key Metrics</h3>
+            <div id="detail-kpis" class="kpi-grid"></div>
+          </div>
+          <div class="detail-charts">
+            <div class="chart-card card">
+              <h3>Monthly Solar Irradiance (kWh/m²/day)</h3>
+              <canvas id="chart-irradiance" width="500" height="200"></canvas>
+            </div>
+            <div class="chart-card card">
+              <h3>Monthly Energy Prices ($/kWh)</h3>
+              <canvas id="chart-prices" width="500" height="200"></canvas>
+            </div>
+            <div class="chart-card card">
+              <h3>10-Year Cumulative P&amp;L ($)</h3>
+              <canvas id="chart-projection" width="500" height="200"></canvas>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
+    <!-- Dev B: Comparison -->
     <section id="section-comparison" class="app-section">
       <div class="section-inner">
-        <div id="comparison-mount"></div>
+        <div class="section-header">
+          <h2 class="section-title">Location Comparison</h2>
+          <p class="section-desc">Compare up to 3 locations side-by-side</p>
+        </div>
+        <div id="comparison-selectors" class="comparison-selectors">
+          <div class="compare-slot card" data-slot="0">
+            <label>Location 1</label>
+            <select class="compare-select"><option value="">— Select —</option></select>
+          </div>
+          <div class="compare-slot card" data-slot="1">
+            <label>Location 2</label>
+            <select class="compare-select"><option value="">— Select —</option></select>
+          </div>
+          <div class="compare-slot card" data-slot="2">
+            <label>Location 3</label>
+            <select class="compare-select"><option value="">— Select —</option></select>
+          </div>
+        </div>
+        <div id="comparison-table-wrap">
+          <table id="comparison-table" class="comparison-table">
+            <thead><tr id="comparison-header"></tr></thead>
+            <tbody id="comparison-body"></tbody>
+          </table>
+        </div>
       </div>
     </section>
 

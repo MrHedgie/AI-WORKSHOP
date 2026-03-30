@@ -27,8 +27,8 @@
   --transition-fast: 150ms ease;
   --transition-std:  250ms ease;
 
-  --max-width:        1280px;
-  --section-padding:  3rem 1.5rem;
+  --max-width:       1280px;
+  --section-padding: 3rem 1.5rem;
 }
 
 /* ============================================================
@@ -40,9 +40,7 @@
   padding: 0;
 }
 
-html {
-  scroll-behavior: smooth;
-}
+html { scroll-behavior: smooth; }
 
 body {
   font-family: var(--font-sans);
@@ -52,20 +50,15 @@ body {
   font-size: 16px;
 }
 
-img, svg {
-  display: block;
-  max-width: 100%;
-}
+img, svg { display: block; max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+button, input, select { font-family: inherit; font-size: inherit; }
 
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-button, input, select {
-  font-family: inherit;
-  font-size: inherit;
-}
+/* ============================================================
+   SHARED: Layout — Section visibility (JS-driven SPA nav)
+   ============================================================ */
+.app-section          { display: none; padding: var(--section-padding); }
+.app-section.active   { display: block; }
 
 /* ============================================================
    SHARED: Layout — Header
@@ -97,11 +90,7 @@ button, input, select {
   flex-shrink: 0;
 }
 
-.header-logo {
-  font-size: 1.6rem;
-  color: var(--color-accent);
-  line-height: 1;
-}
+.header-logo { font-size: 1.6rem; color: var(--color-accent); line-height: 1; }
 
 .header-title {
   font-size: 1.1rem;
@@ -116,50 +105,45 @@ button, input, select {
   white-space: nowrap;
 }
 
-.header-nav {
-  display: flex;
-  gap: 0.25rem;
-}
+.header-nav { display: flex; gap: 0.25rem; }
 
-.nav-link {
+/* Nav buttons (SPA-style) */
+.nav-btn {
   padding: 0.4rem 0.85rem;
   border-radius: var(--radius-sm);
+  border: 1px solid transparent;
   font-size: 0.875rem;
   font-weight: 500;
   color: rgba(255, 255, 255, 0.75);
+  background: transparent;
+  cursor: pointer;
   transition: background-color var(--transition-fast), color var(--transition-fast);
 }
 
-.nav-link:hover,
-.nav-link:focus-visible {
+.nav-btn:hover,
+.nav-btn:focus-visible {
   background-color: rgba(255, 255, 255, 0.1);
   color: #ffffff;
   outline: none;
 }
 
+.nav-btn.active {
+  background-color: var(--color-accent);
+  color: #ffffff;
+  font-weight: 600;
+}
+
 /* ============================================================
    SHARED: Layout — Main, Sections
    ============================================================ */
-.site-main {
-  min-height: 100vh;
-}
-
-.app-section {
-  padding: var(--section-padding);
-}
-
-.app-section--alt {
-  background-color: var(--color-section-alt);
-}
+.site-main { min-height: 100vh; }
 
 .section-inner {
   max-width: var(--max-width);
   margin: 0 auto;
 }
 
-.section-header {
-  margin-bottom: 2rem;
-}
+.section-header { margin-bottom: 2rem; }
 
 .section-title {
   font-size: 1.6rem;
@@ -186,10 +170,7 @@ button, input, select {
   font-size: 0.8rem;
 }
 
-.footer-inner {
-  max-width: var(--max-width);
-  margin: 0 auto;
-}
+.footer-inner { max-width: var(--max-width); margin: 0 auto; }
 
 /* ============================================================
    SHARED: Utility — Buttons
@@ -210,13 +191,8 @@ button, input, select {
   white-space: nowrap;
 }
 
-.btn-primary:hover {
-  filter: brightness(1.08);
-}
-
-.btn-primary:active {
-  transform: scale(0.97);
-}
+.btn-primary:hover  { filter: brightness(1.08); }
+.btn-primary:active { transform: scale(0.97); }
 
 .btn-secondary {
   display: inline-flex;
@@ -234,16 +210,24 @@ button, input, select {
   white-space: nowrap;
 }
 
-.btn-secondary:hover {
-  background-color: var(--color-bg);
-  border-color: #bbb;
+.btn-secondary:hover { background-color: var(--color-bg); border-color: #bbb; }
+
+.btn-back {
+  background: none;
+  border: none;
+  color: var(--color-accent);
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0;
+  margin-bottom: 0.5rem;
+  display: block;
 }
+.btn-back:hover { text-decoration: underline; }
 
 /* ============================================================
    DEV A: Rankings Section
    ============================================================ */
-
-/* Controls bar */
 .rankings-controls {
   display: flex;
   flex-wrap: wrap;
@@ -297,9 +281,7 @@ button, input, select {
 }
 
 #filter-min-roi,
-#filter-max-payback {
-  width: 90px;
-}
+#filter-max-payback { width: 90px; }
 
 .results-count {
   margin-left: auto;
@@ -308,7 +290,6 @@ button, input, select {
   align-self: center;
 }
 
-/* Rankings list grid */
 .rankings-list {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
@@ -353,15 +334,9 @@ button, input, select {
   letter-spacing: -0.02em;
 }
 
-.card-rank--top {
-  background-color: #d4a017;
-}
+.card-rank--top { background-color: #d4a017; }
 
-.card-body {
-  flex: 1;
-  padding: 1rem 1.1rem;
-  min-width: 0;
-}
+.card-body { flex: 1; padding: 1rem 1.1rem; min-width: 0; }
 
 .card-header-row {
   display: flex;
@@ -392,7 +367,6 @@ button, input, select {
   flex-shrink: 0;
 }
 
-/* Metric boxes */
 .card-metrics {
   display: flex;
   gap: 0.5rem;
@@ -408,9 +382,9 @@ button, input, select {
   min-width: 0;
 }
 
-.metric.roi-good  { border-left-color: var(--color-good-roi); }
+.metric.roi-good   { border-left-color: var(--color-good-roi); }
 .metric.roi-medium { border-left-color: var(--color-medium-roi); }
-.metric.roi-bad   { border-left-color: var(--color-bad-roi); }
+.metric.roi-bad    { border-left-color: var(--color-bad-roi); }
 
 .metric-label {
   display: block;
@@ -431,35 +405,23 @@ button, input, select {
   white-space: nowrap;
 }
 
-.metric.roi-good  .metric-value { color: var(--color-good-roi); }
-.metric.roi-bad   .metric-value { color: var(--color-bad-roi); }
+.metric.roi-good .metric-value { color: var(--color-good-roi); }
+.metric.roi-bad  .metric-value { color: var(--color-bad-roi); }
 
-/* Key metric chips */
 .card-key-metrics {
   display: flex;
   flex-wrap: wrap;
   gap: 0.4rem;
+  margin-bottom: 0.75rem;
 }
 
-.key-metric {
-  display: flex;
-  align-items: center;
-  gap: 0.3rem;
-  font-size: 0.75rem;
-  color: var(--color-text-muted);
-}
+.key-metric { display: flex; align-items: center; gap: 0.3rem; font-size: 0.75rem; color: var(--color-text-muted); }
+.key-metric-label { font-weight: 600; }
+.key-metric-value { color: var(--color-text); }
+.key-metric-sep   { color: var(--color-border); }
 
-.key-metric-label {
-  font-weight: 600;
-}
-
-.key-metric-value {
-  color: var(--color-text);
-}
-
-.key-metric-sep {
-  color: var(--color-border);
-}
+.card-actions { display: flex; gap: 0.5rem; }
+.card-actions .btn-secondary { flex: 1; padding: 0.4rem 0.5rem; font-size: 0.78rem; }
 
 /* ============================================================
    DEV A: Calculator Section
@@ -493,11 +455,7 @@ button, input, select {
   margin-bottom: 1.75rem;
 }
 
-.input-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
-}
+.input-group { display: flex; flex-direction: column; gap: 0.35rem; }
 
 .input-group label {
   font-size: 0.78rem;
@@ -521,12 +479,8 @@ button, input, select {
   border-color: transparent;
 }
 
-.input-hint {
-  font-size: 0.72rem;
-  color: var(--color-text-muted);
-}
+.input-hint { font-size: 0.72rem; color: var(--color-text-muted); }
 
-/* Calculator output */
 .calculator-output {
   background-color: var(--color-bg);
   border-radius: var(--radius-md);
@@ -550,11 +504,7 @@ button, input, select {
   margin-bottom: 0.75rem;
 }
 
-.output-item {
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
-}
+.output-item { display: flex; flex-direction: column; gap: 0.2rem; }
 
 .output-item.highlight .output-value {
   color: var(--color-accent);
@@ -569,102 +519,225 @@ button, input, select {
   color: var(--color-text-muted);
 }
 
-.output-value {
-  font-size: 0.95rem;
-  font-weight: 700;
-  color: var(--color-text);
+.output-value { font-size: 0.95rem; font-weight: 700; color: var(--color-text); }
+
+.output-note { font-size: 0.78rem; color: var(--color-text-muted); }
+
+.calculator-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+
+/* ============================================================
+   DEV B: Map, Detail & Comparison
+   ============================================================ */
+
+/* Map */
+.map-layout {
+  display: grid;
+  grid-template-columns: 1fr 260px;
+  gap: 20px;
 }
 
-.output-note {
-  font-size: 0.78rem;
-  color: var(--color-text-muted);
-}
-
-/* Calculator action buttons */
-.calculator-actions {
+.map-container {
+  background: var(--color-card);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  padding: 12px;
+  min-height: 380px;
   display: flex;
-  gap: 0.75rem;
-  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
 }
 
-/* ============================================================
-   DEV B: Map, Detail & Comparison (PLACEHOLDER — Dev B owns this)
-   ============================================================ */
-/* Dev B writes all styles below this comment */
+.map-container svg { width: 100%; height: auto; }
 
+.state-tile { cursor: default; transition: opacity 0.15s; }
+.state-tile.has-data { cursor: pointer; }
+.state-tile.has-data:hover rect { opacity: 0.8; }
+.state-tile.selected rect { stroke: var(--color-accent) !important; stroke-width: 3 !important; }
+
+.map-sidebar { display: flex; flex-direction: column; gap: 12px; }
+
+.map-legend {
+  background: var(--color-card);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  padding: 16px;
+}
+
+.map-legend h3 { font-size: 0.9rem; font-weight: 700; margin-bottom: 12px; color: var(--color-text); }
+
+.legend-scale {
+  height: 14px;
+  border-radius: 4px;
+  background: linear-gradient(to right, var(--color-bad-roi), var(--color-medium-roi), var(--color-good-roi));
+  margin-bottom: 6px;
+}
+
+.legend-labels { display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--color-text-muted); }
+
+.map-hover-info {
+  background: var(--color-card);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  padding: 16px;
+}
+
+.map-hover-info h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 10px; }
+
+.hover-stat { display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 0.85rem; }
+.hover-stat-label { color: var(--color-text-muted); }
+.hover-stat-value { font-weight: 600; }
+
+.map-hover-info .btn-secondary { width: 100%; margin-top: 12px; justify-content: center; }
+
+/* Detail */
+.detail-layout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 20px;
+}
+
+.detail-metrics {
+  background: var(--color-card);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  padding: 20px;
+}
+
+.detail-metrics h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 16px; color: var(--color-text); }
+
+.kpi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+.kpi-item { padding: 10px; background: var(--color-bg); border-radius: var(--radius-sm); }
+.kpi-label { font-size: 0.68rem; color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; font-weight: 600; }
+.kpi-value { font-size: 1rem; font-weight: 700; color: var(--color-text); }
+.kpi-value.good   { color: var(--color-good-roi); }
+.kpi-value.bad    { color: var(--color-bad-roi); }
+.kpi-value.accent { color: var(--color-accent); }
+
+.detail-charts { display: flex; flex-direction: column; gap: 16px; }
+
+.chart-card {
+  background: var(--color-card);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  padding: 20px;
+}
+
+.chart-card h3 { font-size: 0.85rem; font-weight: 700; margin-bottom: 12px; color: var(--color-text); }
+.chart-card canvas { width: 100% !important; height: auto !important; }
+
+/* Comparison */
+.comparison-selectors {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.compare-slot {
+  background: var(--color-card);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  padding: 16px;
+}
+
+.compare-slot label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+
+.compare-select {
+  width: 100%;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 8px 10px;
+  font-size: 0.9rem;
+  background: #fff;
+}
+
+.compare-select:focus { outline: 2px solid var(--color-accent); outline-offset: 1px; }
+
+#comparison-table-wrap { overflow-x: auto; }
+
+.comparison-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--color-card);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+  font-size: 0.9rem;
+}
+
+.comparison-table th {
+  background: var(--color-header);
+  color: #fff;
+  padding: 12px 16px;
+  text-align: left;
+  font-weight: 600;
+}
+
+.comparison-table th:first-child { width: 160px; }
+
+.comparison-table td {
+  padding: 11px 16px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.comparison-table tr:last-child td { border-bottom: none; }
+.comparison-table tr:nth-child(even) td { background: #fafafa; }
+
+.comparison-table td:first-child {
+  font-weight: 600;
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.best-value  { color: var(--color-good-roi); font-weight: 700; }
+.worst-value { color: var(--color-bad-roi); }
+
+.cmp-header-location { font-size: 0.95rem; font-weight: 700; }
+.cmp-header-sub { font-size: 0.75rem; font-weight: 400; opacity: 0.7; display: block; }
+
+.no-data-msg { text-align: center; color: var(--color-text-muted); padding: 32px; font-style: italic; }
 
 /* ============================================================
-   SHARED: Responsive — Mobile (max 768px)
+   SHARED: Responsive
    ============================================================ */
+@media (max-width: 900px) {
+  .map-layout    { grid-template-columns: 1fr; }
+  .detail-layout { grid-template-columns: 1fr; }
+}
+
 @media (max-width: 768px) {
-  :root {
-    --section-padding: 2rem 1rem;
-  }
+  :root { --section-padding: 2rem 1rem; }
 
-  .header-inner {
-    padding: 0 1rem;
-    height: 56px;
-  }
+  .header-inner  { padding: 0 1rem; height: 56px; }
+  .header-subtitle { display: none; }
+  .header-title  { font-size: 0.95rem; }
+  .nav-btn       { padding: 0.35rem 0.6rem; font-size: 0.8rem; }
+  .section-title { font-size: 1.3rem; }
 
-  .header-subtitle {
-    display: none;
-  }
-
-  .header-title {
-    font-size: 0.95rem;
-  }
-
-  .nav-link {
-    padding: 0.35rem 0.6rem;
-    font-size: 0.8rem;
-  }
-
-  .section-title {
-    font-size: 1.3rem;
-  }
-
-  .rankings-controls {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .filter-controls {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  #filter-min-roi,
-  #filter-max-payback {
-    width: 100%;
-  }
-
-  .rankings-list {
-    grid-template-columns: 1fr;
-  }
-
-  .card-metrics {
-    flex-direction: column;
-  }
-
-  .output-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .calculator-inputs {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .calculator-panel {
-    padding: 1.25rem;
-  }
+  .rankings-controls  { flex-direction: column; align-items: stretch; }
+  .filter-controls    { flex-direction: column; align-items: stretch; }
+  #filter-min-roi, #filter-max-payback { width: 100%; }
+  .rankings-list      { grid-template-columns: 1fr; }
+  .card-metrics       { flex-direction: column; }
+  .output-grid        { grid-template-columns: repeat(2, 1fr); }
+  .calculator-inputs  { grid-template-columns: 1fr 1fr; }
+  .calculator-panel   { padding: 1.25rem; }
+  .comparison-selectors { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 480px) {
-  .output-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .calculator-inputs {
-    grid-template-columns: 1fr;
-  }
+  .output-grid       { grid-template-columns: 1fr; }
+  .calculator-inputs { grid-template-columns: 1fr; }
 }
