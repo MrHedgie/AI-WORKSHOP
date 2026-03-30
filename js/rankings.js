@@ -72,14 +72,16 @@
     var regionSelect = document.createElement('select');
     regionSelect.id = 'filter-region';
     [
-      { value: 'all',            text: 'All Regions' },
-      { value: 'Southwest',      text: 'Southwest' },
-      { value: 'West',           text: 'West' },
-      { value: 'Mountain',       text: 'Mountain' },
-      { value: 'South Central',  text: 'South Central' },
-      { value: 'Southeast',      text: 'Southeast' },
-      { value: 'Midwest',        text: 'Midwest' },
-      { value: 'Northeast',      text: 'Northeast' }
+      { value: 'all',              text: 'All Regions' },
+      { value: 'Southwest',        text: 'Southwest' },
+      { value: 'West',             text: 'West' },
+      { value: 'Mountain',         text: 'Mountain' },
+      { value: 'South Central',    text: 'South Central' },
+      { value: 'Southeast',        text: 'Southeast' },
+      { value: 'Midwest',          text: 'Midwest' },
+      { value: 'Northeast',        text: 'Northeast' },
+      { value: 'Pacific Northwest', text: 'Pacific Northwest' },
+      { value: 'Pacific',          text: 'Pacific (Hawaii)' }
     ].forEach(function (opt) {
       var o = document.createElement('option');
       o.value = opt.value;
