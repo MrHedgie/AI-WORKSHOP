@@ -44,14 +44,16 @@ Payback Period = Total CapEx / (Annual Revenue - Annual OpEx)
 
 ```
 /
-├── index.html          # Main entry point
+├── index.html              # Main entry point — skeleton agreed upfront, then frozen
 ├── css/
-│   └── styles.css      # All styles
+│   └── styles.css          # Styles — split into clearly labelled blocks per developer
 ├── js/
-│   ├── data.js         # Mocked data (locations, prices, weather)
-│   ├── calculator.js   # Profitability calculation logic
-│   ├── map.js          # US map rendering / location visualization
-│   └── app.js          # Main app logic, UI interactions
+│   ├── data.js             # Mocked data (locations, prices, weather)       [Dev A]
+│   ├── calculator.js       # Profitability calculation logic                 [Dev A]
+│   ├── rankings.js         # Rankings list + Calculator panel UI logic       [Dev A]
+│   ├── map.js              # SVG US map rendering and interaction            [Dev B]
+│   ├── detail.js           # Location Detail view + Comparison view logic   [Dev B]
+│   └── app.js              # Thin init only — calls initRankings(), initMap() [shared, written last]
 └── CLAUDE.md
 ```
 
@@ -133,14 +135,138 @@ Payback Period = Total CapEx / (Annual Revenue - Annual OpEx)
 
 ---
 
+## Developer Task Split
+
+The split is file-based to avoid merge conflicts. Each developer owns distinct files. The only shared files are `index.html` (skeleton agreed upfront and frozen) and `app.js` (written last, tiny).
+
+---
+
+### Developer A — Data, Logic & Rankings
+
+**Owns these files entirely:**
+- `js/data.js` — all mock location data and farm config defaults
+- `js/calculator.js` — all profitability formulas (pure functions, no DOM)
+- `js/rankings.js` — Rankings list UI, filters, Calculator panel UI logic
+- `css/styles.css` lines under `/* === DEV A: Rankings & Calculator === */`
+
+**HTML sections to populate (IDs agreed upfront):**
+- `#section-rankings` — ranked location cards with sort/filter controls
+- `#section-calculator` — input form (panels, price, plot) + output metrics
+
+**Build order:**
+1. `js/data.js` — define location data shape and populate 10–15 locations
+2. `js/calculator.js` — implement all formulas, export via `window.Calculator`
+3. `js/rankings.js` — render ranked list, wire up filters, call Calculator
+4. CSS block for rankings and calculator components
+
+**Public API to expose** (so Dev B can reuse):
+```js
+window.Calculator.calcROI(location, config)      // returns { revenue, capex, opex, roi, payback }
+window.Calculator.rankLocations(locations, config) // returns sorted array
+window.AppData.locations                           // the mocked location array
+window.AppData.defaultConfig                       // default farm configuration
+```
+
+---
+
+### Developer B — Map, Detail & Comparison Views
+
+**Owns these files entirely:**
+- `js/map.js` — inline SVG US map, state hover/click, color-coding by ROI
+- `js/detail.js` — Location Detail view (charts), Comparison view (side-by-side)
+- `css/styles.css` lines under `/* === DEV B: Map, Detail & Comparison === */`
+
+**HTML sections to populate (IDs agreed upfront):**
+- `#section-map` — SVG map container + legend
+- `#section-detail` — detail panel with monthly charts and 10-year projection
+- `#section-comparison` — side-by-side comparison table for up to 3 locations
+
+**Build order:**
+1. `js/map.js` — embed SVG map, color states by `window.Calculator.calcROI()` once Dev A's data/calculator is ready (or stub it)
+2. `js/detail.js` — detail view with Canvas bar charts for monthly irradiance and prices
+3. Comparison view within `detail.js`
+4. CSS block for map, detail, and comparison components
+
+**Depends on Dev A's public API:**
+```js
+window.Calculator.calcROI(location, config)   // call to get metrics per location
+window.AppData.locations                       // iterate to color the map
+```
+
+---
+
+### Shared Contracts (agree before coding, then freeze)
+
+These must be settled on day one so both devs can work independently:
+
+#### HTML skeleton (`index.html`)
+Dev A writes the full skeleton with all section IDs and script tags. Dev B does not touch `index.html`.
+
+```html
+<header>…</header>
+<main>
+  <section id="section-rankings"><!-- Dev A --></section>
+  <section id="section-calculator"><!-- Dev A --></section>
+  <section id="section-map"><!-- Dev B --></section>
+  <section id="section-detail"><!-- Dev B --></section>
+  <section id="section-comparison"><!-- Dev B --></section>
+</main>
+<script src="js/data.js"></script>
+<script src="js/calculator.js"></script>
+<script src="js/rankings.js"></script>
+<script src="js/map.js"></script>
+<script src="js/detail.js"></script>
+<script src="js/app.js"></script>
+```
+
+#### CSS file structure (`styles.css`)
+One file, split into clearly labelled blocks — each dev only edits their block:
+```css
+/* === SHARED: Reset, variables, layout, header === */
+/* === DEV A: Rankings & Calculator === */
+/* === DEV B: Map, Detail & Comparison === */
+```
+
+#### CSS custom properties (shared variables — Dev A defines, Dev B uses)
+```css
+--color-accent: #F5A623;
+--color-bg: #f4f4f4;
+--color-header: #1a1a2e;
+--color-card: #ffffff;
+--color-good-roi: #2ecc71;
+--color-bad-roi: #e74c3c;
+```
+
+#### Location data shape (defined in `data.js` by Dev A)
+Dev B writes `map.js` and `detail.js` against this shape — do not change field names after agreement.
+
+---
+
+### `app.js` — Written Last, By Both Together
+
+Kept intentionally minimal — just wires the two modules together:
+```js
+document.addEventListener('DOMContentLoaded', () => {
+  initRankings();   // defined in rankings.js
+  initMap();        // defined in map.js
+  initDetail();     // defined in detail.js
+});
+```
+
+---
+
 ## Key Files to Build (in order)
 
-1. `js/data.js` — mock data for all locations
-2. `js/calculator.js` — profitability formulas
-3. `index.html` — layout skeleton with all sections
-4. `css/styles.css` — full styles
-5. `js/map.js` — SVG map interaction
-6. `js/app.js` — tie everything together
+**Phase 1 — Parallel (no dependencies between devs):**
+- Dev A: `js/data.js`, `js/calculator.js`
+- Dev B: `js/map.js` stub with hardcoded test data
+
+**Phase 2 — Dev A unblocks Dev B:**
+- Dev A: `js/rankings.js` + CSS block
+- Dev B: integrates `window.Calculator` and `window.AppData` into `js/map.js`, builds `js/detail.js`
+
+**Phase 3 — Integration:**
+- Both: CSS review pass, `js/app.js`, final `index.html` wiring
 
 ---
 
